@@ -1,0 +1,6 @@
+# No subir config local ni notas diarias
+config/
+memory/
+
+# Capturas temporales
+*.png
