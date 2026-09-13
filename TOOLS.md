@@ -126,6 +126,15 @@ Sin offset, la API interpreta la hora como **UTC** y el evento aparece desplazad
 - Registros, series numéricas, cualquier cosa que se agregue fila a fila.
 - **NO usar para:** prosa, ni como sustituto de una base de datos real.
 
+### 4Geeks / BreatheCode → seguimiento del propio progreso en el bootcamp
+
+- No pasa por Zapier: llamada HTTP directa (`curl`) a la API pública de BreatheCode, `https://breathecode.herokuapp.com`, con header `Authorization: Token <BREATHECODE_STUDENT_TOKEN>`.
+- El token **no está en ningún archivo de este repo**. Vive en `/root/.openclaw/secrets/breathecode.env` (fuera del workspace, permisos 600) y se inyecta al proceso del gateway vía `EnvironmentFile=` en un drop-in de systemd (`~/.config/systemd/user/openclaw-gateway.service.d/override.conf`). Cada skill `4geeks-*` lo referencia por `skills.entries.<skill>.apiKey` como `SecretRef {source:"env", provider:"default", id:"BREATHECODE_STUDENT_TOKEN"}` en `openclaw.json` — nunca en texto plano. Ver `SKILL_LOG.md` para el detalle completo.
+- Mi id de usuario en BreatheCode es `21690`, mi academia es `4Geeks Madrid` (`id=6`, slug `madrid-spain`), mi cohort activo es `spain-aie-pt-4`.
+- **Trampa verificada:** `GET /v1/admissions/cohort/user` **sin** `?users=<id>` no filtra por el usuario autenticado — devuelve cohorts de cientos de otros estudiantes. Siempre pasa `users=<tu_id>`.
+- **NO usar para:** nada que no sea consultar (lectura); la API de BreatheCode no se usa aquí para escribir ni modificar datos del estudiante.
+- Skills: `4geeks-auth`, `4geeks-projects`, `4geeks-pending`, `4geeks-progress`, `4geeks-mentorship`, `4geeks-certificates`.
+
 ## Prioridades cuando se solapan
 
 1. ¿Necesita **tiempo reservado**? → Calendar.

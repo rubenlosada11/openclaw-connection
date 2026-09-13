@@ -166,3 +166,20 @@ Busca en Gmail correos con "Ecuaciones" en el asunto, resuelve las ecuaciones de
 **Cómo comprobar que funcionó.** Buscar en Enviados (`in:sent subject:Ecuaciones`) y confirmar que el correo existe con el cuerpo esperado — igual criterio que las otras dos skills: un `success` de la escritura no es suficiente.
 
 **Por qué es una excepción y no una tercera skill "oficial" de la práctica.** Introduce un tipo de acción (enviar correo automáticamente) que las reglas críticas de la práctica tratan como sensible por defecto. Se documenta aparte, con su autorización explícita y su alcance acotado, para que quede claro en una revisión que no es parte del mínimo pedido sino una ampliación consciente y acordada.
+
+---
+
+## Skill set 3 — 4Geeks / BreatheCode (práctica "Mi Asistente 4Geeks", 2026-09-13)
+
+Seis skills de solo lectura contra la API de estudiante de BreatheCode (`https://breathecode.herokuapp.com`), fuera del patrón Zapier de los sets anteriores porque BreatheCode no tiene conector en Zapier: llamada HTTP directa con `curl` y el token de estudiante como `Authorization: Token`.
+
+```text
+4geeks-auth          → GET /v1/auth/user/me
+4geeks-projects       → GET /v1/assignment/user/me/task
+4geeks-pending        → GET /v1/assignment/user/me/task?task_status=PENDING
+4geeks-progress       → GET /v1/auth/user/me + /v1/admissions/cohort/user?users=<id> + /v1/assignment/user/me/task
+4geeks-mentorship     → GET /v1/mentorship/user/me/session   (adicional)
+4geeks-certificates   → GET /v1/certificate/me                (adicional)
+```
+
+Detalle completo (diseño, endpoints verificados contra el código fuente de `breatheco-de/apiv2`, mecanismo de secretos, pruebas reales y problemas encontrados) en `SKILL_LOG.md`, que es el entregable principal de esta práctica. No se repite aquí para no duplicar mantenimiento.
